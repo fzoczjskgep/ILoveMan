@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Piste Mystère</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #222;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .container {
+            padding: 50px;
+        }
+        .btn {
+            background-color: #ff4500;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #e63900;
+        }
+    </style>
+</head>
+<body>
+    <header>🔍 Jeu de Piste Mystère 🔍</header>
+    <div class="container">
+        <h1>Bienvenue, détective...</h1>
+        <p>Un message codé a été trouvé. À toi de le déchiffrer !</p>
+        <button class="btn" onclick="startGame()">Commencer l'enquête</button>
+    </div>
+    <script>
+        function startGame() {
+            alert("Première énigme à résoudre !");
+            // Ici, tu pourras rediriger vers la première énigme ou afficher un indice
+        }
+    </script>
+</body>
+</html>
