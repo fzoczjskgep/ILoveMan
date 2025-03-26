@@ -1,188 +1,121 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Piste Mystère</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #fff;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            font-size: 24px;
-        }
-        nav {
-            background-color: #333;
-            overflow: hidden;
-        }
-        nav a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
-            float: left;
-            display: block;
-        }
-        nav a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-        .container {
-            padding: 20px;
-        }
-        .section-title {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        .form-input {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-            width: 250px;
-        }
-        .btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            margin-top: 10px;
-        }
-        .btn:hover {
-            background-color: #45a049;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+    <title>Poste Italiane Genova</title>
 </head>
+
 <body>
-
-    <header>🔍 Jeu de Piste Mystère 🔍</header>
-
-    <nav>
-        <a href="#home">Accueil</a>
-        <a href="#track">Suivi des Colis</a>
-        <a href="#manage">Gestion des Livraisons</a>
-        <a href="#history">Historique</a>
-    </nav>
-
     <!-- Login Section -->
     <div class="container" id="login-container">
         <h1>Connexion</h1>
         <div class="login-box">
-            <input type="text" id="username" class="form-input" placeholder="Pseudo">
+            <input type="text" id="username" class="form-input" placeholder="ID">
             <br>
             <input type="password" id="password" class="form-input" placeholder="Mot de passe">
             <br>
             <button class="btn" onclick="login()">Se connecter</button>
             <br>
             <button class="btn" onclick="showRecovery()">Mot de passe oublié</button>
+            <br>
+            <br>
+            <img src="PosteItaliane.png" width="40%">
         </div>
     </div>
 
     <!-- Recovery Section -->
     <div class="container hidden" id="recovery-container">
         <h1>Récupération de mot de passe</h1>
-        <p>Répondez aux questions pour vous reconnecter.</p>
+        <p>Répondez aux questions de récupération pour vous reconnecter.</p>
+        <input type="text" id="ID" class="form-input" placeholder="Votre ID">
+        <br>
         <input type="text" id="pet" class="form-input" placeholder="Nom de votre animal de compagnie">
         <br>
         <input type="text" id="grandmother" class="form-input" placeholder="Prénom de votre grand-mère">
         <br>
         <input type="text" id="city" class="form-input" placeholder="Lieu où vous habitez">
         <br>
+        <button class="btn" onclick="back()">Retour</button>
         <button class="btn" onclick="recoverAccount()">Valider</button>
     </div>
 
     <!-- Home Section -->
     <div class="container hidden" id="home">
-        <h2 class="section-title">Bienvenue sur le Site de Gestion des Livraisons</h2>
-        <p>Suivez vos colis, gérez les livraisons et consultez l'historique des envois.</p>
+        <h2 class="section-title">Gestion des expéditions</h2>
+        <p>Bienvenue Albano.</p>
+        <br>
+        <p>Indiquer le code du dossier pour planifier un itinéraire.</p>
+        <br>
+        <input type="text" id="dossier" class="form-input" placeholder="Code du dossier">
+        <br>
+        <button class="btn" onclick="validateFolder()">Confirmer</button>
     </div>
 
-    <!-- Tracking Section -->
-    <div class="container hidden" id="track">
-        <h2 class="section-title">Suivi des Colis</h2>
-        <input type="text" id="tracking-number" class="form-input" placeholder="Entrez votre numéro de suivi">
-        <button class="btn" onclick="trackPackage()">Suivre</button>
-        <div id="tracking-result"></div>
+    <div class="container hidden" id="game">
+        <h2 class="section-title">Gestion des expéditions</h2>
+        <p>Bienvenue Albano.</p>
+        <br>
+        <p>Une lettre à destination de <b>Manon Vallat</b> est en cours d'acheminement. Le courrier doit arriver au dépot [Berlin], le temps de trajet depuis [Genoa] est estimé à 10h37.</p>
+        <br>
+        <p>Merci d'indiquer un itinéraire pour le chauffeur. Attention, afin d'optimiser la logistique, veillez à ce que le transporteur ne passe pas deux fois par le même endroit, et qu'il effectue une boucle pour revenir à [Genoa] ensuite. Pour vous aider, à distribuer l'ensemble du courrier, des indications ont été ajoutées sur la carte ci-après. Veillez à ce que le transporteur passe le nombre de fois indiqué pour chaque zone géographique. Lorsque rien n'est précisé, vous êtes libres d'organiser le trajet comme vous le souhaitez.
+        </p>
+        <br>
+        <canvas id="gameCanvas"></canvas>
+        <br>
+        <button class="btn" onclick="validateSolution()">Valider</button>
+        <p id="result"></p>
     </div>
 
-    <!-- Manage Deliveries Section -->
-    <div class="container hidden" id="manage">
-        <h2 class="section-title">Gestion des Livraisons</h2>
-        <form>
-            <input type="text" id="package-name" class="form-input" placeholder="Nom du destinataire">
-            <input type="text" id="package-address" class="form-input" placeholder="Adresse de livraison">
-            <input type="date" id="delivery-date" class="form-input" placeholder="Date de livraison">
-            <button type="submit" class="btn">Ajouter une Livraison</button>
-        </form>
-    </div>
+    <div class="container hidden" id="lettre">
+        <h2>Courrier pour Manon 🥰</h2>
+        <p>Coucou ! Bien joué si tu es arrivée jusque là c'est que tu as résolu le petit casse-tête que je t'ai préparé !! J'espère que ça t'as plu et que c'était ni trop dur ni trop facile...</p>
+        <br>
 
-    <!-- History Section -->
-    <div class="container hidden" id="history">
-        <h2 class="section-title">Historique des Livraisons</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nom du Destinataire</th>
-                    <th>Adresse</th>
-                    <th>Date de Livraison</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="history-table">
-                <tr>
-                    <td>1</td>
-                    <td>John Doe</td>
-                    <td>Paris, France</td>
-                    <td>2025-03-01</td>
-                    <td>Livré</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jane Smith</td>
-                    <td>Lyon, France</td>
-                    <td>2025-03-05</td>
-                    <td>En Transit</td>
-                </tr>
-            </tbody>
-        </table>
+        <p>C'est un peu moins mignon de t'écrire une lettre sur un ordinateur qu'avec un vrai papier mais j'arrive bientôt à Berlin pour rattraper ça !</p>
+
+        <p>Tu me manques un petit peu tous les jours mais j'aime bien notre petit relation à distance ça marche super bien et ça va être encore plus chouette quand on va se retrouver ☺️</p>
+
+        <p>J'espère que les quelques mois qu'il reste de stage vont passer super vite pour qu'on puisse partir en vacances tous les deux au Soleil cet été ! Ton stage a l'air super sympa et Berlin est hyper stylée c'est super que tu sois là-bas !</p>
+
+        <p>Je t'aime FORT FORT FORT ❤️❤️❤️ Plein de bisous de très loin !!</p>
+        <br>
+        <p>À très bientôt Man 🥰</p>
+        <br>
+        <br>
+        <p>Ant</p>
+        <br>
+        <br>
+        <p>PS : J'ai essayé d'éviter un max les "je" aussi mais c'est pas facile... j'suis aussi trop une personne toxique !</p>
+
     </div>
 
     <script>
+        function back() {
+            document.getElementById("login-container").classList.remove("hidden");
+            document.getElementById("recovery-container").classList.add("hidden");
+        }
+
+
         function login() {
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
             
-            if (username === "detective" && password === "mystere") {
+            if (username === "ab256goa18" && password === "bfezifzoefzebgopojzg487g7r45r5r44rgr!!fzfz@±fjefije") {
                 document.getElementById("login-container").classList.add("hidden");
                 document.getElementById("home").classList.remove("hidden");
+            } else {
+                alert("Identifiants incorrects. Réessayez !");
+            }
+        }
+
+        function validateFolder() {
+            var folder = document.getElementById("dossier").value;
+
+            if (folder === "45862024") {
+                document.getElementById("game").classList.remove("hidden");
+                document.getElementById("home").classList.add("hidden")
             } else {
                 alert("Identifiants incorrects. Réessayez !");
             }
@@ -194,11 +127,12 @@
         }
 
         function recoverAccount() {
+            var ID = document.getElementById("ID").value.toLowerCase();
             var pet = document.getElementById("pet").value.toLowerCase();
             var grandmother = document.getElementById("grandmother").value.toLowerCase();
             var city = document.getElementById("city").value.toLowerCase();
             
-            if (pet === "medor" && grandmother === "lucie" && city === "paris") {
+            if (ID === "ab256goa18" && pet === "fluffy" && grandmother === "clotilde" && city === "genoa" || city === "genova" || city === "gênes") {
                 alert("Réponses correctes ! Connexion réussie.");
                 document.getElementById("recovery-container").classList.add("hidden");
                 document.getElementById("home").classList.remove("hidden");
@@ -216,6 +150,218 @@
                 alert('Veuillez entrer un numéro de suivi.');
             }
         }
+
+        const pieces = document.querySelectorAll('.piece');
+        const mapZones = document.querySelectorAll('.map-zone');
+
+        let placedPieces = 0;
+
+        pieces.forEach(piece => {
+            piece.addEventListener('dragstart', dragStart);
+        });
+
+        mapZones.forEach(zone => {
+            zone.addEventListener('dragover', dragOver);
+            zone.addEventListener('drop', dropPiece);
+        });
+
+        function dragStart(event) {
+            event.dataTransfer.setData("text", event.target.dataset.region);
+            event.target.classList.add("hidden");
+        }
+
+        function dragOver(event) {
+            event.preventDefault();
+        }
+
+        function dropPiece(event) {
+            event.preventDefault();
+            const region = event.dataTransfer.getData("text");
+
+            if (event.target.dataset.region === region) {
+                event.target.innerText = region;
+                event.target.style.backgroundColor = "#4CAF50";
+                placedPieces++;
+            } else {
+                document.querySelector(`.piece[data-region="${region}"]`).classList.remove("hidden");
+            }
+
+            if (placedPieces === 4) {
+                document.getElementById("message").style.display = "block";
+            }
+        }
+
+        // Game
+
+        const size = 15;
+        const cellSize = 40;
+        const canvas = document.getElementById("gameCanvas");
+        canvas.width = size * cellSize;
+        canvas.height = size * cellSize;
+        const ctx = canvas.getContext("2d");
+
+        let grid = [
+            ["", "", 3, 2, 2, "", 2, 2, 2, "", "", "", "", 3, ""],
+            [2, 1, "", "", "", "", "", 1, 1, "", "", 3, "", 1, ""],
+            ["", 1, 2, "", "", 3, "", "", "", "", 2, "", "", 2, ""],
+            [1, "", 1, "", 2, "", 3, "", 1, 2, "", "", "", 3, ""],
+            ["", "", "", "", "", "", "", 1, 2, "", 3, 1, 2, "", ""],
+            [3, 0, "", 3, "", 3, 3, "", "", "", 2, "", 1, "", ""],
+            ["", "", "", "", 1, "", "", 1, "", "", 1, "", 2, 0, 1],
+            [3, "", "", "", 1, "", "", "", "", 3, 3, "", "", "", ""],
+            ["", 1, 2, "", "", "", "", 0, 0, "", "", "", 1, "", 3],
+            [3, 2, 1, 2, "", 0, 2, "", "", "", 2, 2, "", "", ""],
+            ["", 2, "", "", "", "", "", "", 1, "", "", "", 0, 2, 1],
+            [2, "", "", "", 1, "", 2, "", 2, "", "", "", 2, 3, ""],
+            ["", "", "", 1, "", "", 1, 1, "", "", 2, "", "", "", ""],
+            [2, 0, "", 3, 2, "", 2, "", "", "", "", 3, "", 3, 3],
+            ["", 2, "", 3, "", "", "", "", 0, 1, 1, 1, "", "", ""]
+        ];
+
+        let edges = {};
+
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "black";
+            ctx.font = "20px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    let num = grid[y][x];
+                    ctx.fillText(num, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
+                }
+            }
+            drawEdges();
+        }
+
+        function drawEdges() {
+            ctx.strokeStyle = "blue";
+            ctx.lineWidth = 3;
+            for (let key in edges) {
+                let [x1, y1, x2, y2] = key.split(",").map(Number);
+                ctx.beginPath();
+                ctx.moveTo(x1 * cellSize, y1 * cellSize);
+                ctx.lineTo(x2 * cellSize, y2 * cellSize);
+                ctx.stroke();
+            }
+        }
+
+        canvas.addEventListener("click", function(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((event.clientX - rect.left) / cellSize);
+            const y = Math.floor((event.clientY - rect.top) / cellSize);
+            const dx = (event.clientX - rect.left) % cellSize;
+            const dy = (event.clientY - rect.top) % cellSize;
+
+            let key;
+            if (dx < dy && dx < cellSize - dy) {
+                key = `${x},${y},${x},${y+1}`;
+            } else if (dx > dy && dx > cellSize - dy) {
+                key = `${x+1},${y},${x+1},${y+1}`;
+            } else if (dy < dx && dy < cellSize - dx) {
+                key = `${x},${y},${x+1},${y}`;
+            } else {
+                key = `${x},${y+1},${x+1},${y+1}`;
+            }
+            
+            if (edges[key]) delete edges[key];
+            else edges[key] = true;
+            
+            drawGrid();
+        });
+
+        function validateSolution() {
+            let isValid = true;
+
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    let expectedEdges = grid[y][x];
+                    if (expectedEdges === "") continue;
+
+                    let actualEdges = [
+                        `${x},${y},${x+1},${y}`,
+                        `${x},${y},${x},${y+1}`,
+                        `${x+1},${y},${x+1},${y+1}`,
+                        `${x},${y+1},${x+1},${y+1}`
+                    ].filter(edge => edges[edge]).length;
+
+                    if (expectedEdges != actualEdges) {
+                        document.getElementById("result").innerText = "Solution incorrecte ❌";
+                        return;
+                    }
+                }
+            }
+
+            function isSingleLoop() {
+                if (Object.keys(edges).length === 0) return false;
+
+                let visitedEdges = new Set();
+                let nodes = {};
+                let startNode = null;
+
+                for (let edge of Object.keys(edges)) {
+                    let [x1, y1, x2, y2] = edge.split(",").map(Number);
+                    let nodeA = `${x1},${y1}`;
+                    let nodeB = `${x2},${y2}`;
+
+                    if (!nodes[nodeA]) nodes[nodeA] = [];
+                    if (!nodes[nodeB]) nodes[nodeB] = [];
+
+                    nodes[nodeA].push(nodeB);
+                    nodes[nodeB].push(nodeA);
+
+                    startNode = nodeA;
+                }
+
+                for (let node in nodes) {
+                    if (nodes[node].length !== 2) return false;
+                }
+
+                let visitedNodes = new Set();
+                let currentNode = startNode;
+                let previousNode = null;
+
+                visitedNodes.add(currentNode);
+                let nextNodes = nodes[currentNode].filter(n => n !== previousNode);
+                previousNode = currentNode;
+                currentNode = nextNodes[0];
+
+                while (true) {
+                    visitedNodes.add(currentNode);
+                    let nextNodes = nodes[currentNode].filter(n => n !== previousNode);
+
+                    console.log(currentNode)
+                    console.log(nextNodes)
+                    console.log("====")
+
+                    if (nextNodes.length !== 1) return false;
+
+                    previousNode = currentNode;
+                    currentNode = nextNodes[0];
+
+                    if (currentNode === startNode) break;
+                }
+
+                return visitedNodes.size === Object.keys(nodes).length;
+            }
+
+            if (!isSingleLoop()) {
+                isValid = false;
+            }
+
+            document.getElementById("result").innerText = isValid ? "Trajet correct ! ✅" : "Trajet incorrect ❌";
+
+            if (isValid === true) {
+                alert("Félicitations, le trajet est correctement planifié ! La destinataire a bien reçu sa lettre !")
+                document.getElementById("game").classList.add("hidden")
+                document.getElementById("lettre").classList.remove("hidden")
+            }
+        }
+
+        drawGrid();
+
     </script>
 
 </body>
