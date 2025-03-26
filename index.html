@@ -33,19 +33,84 @@
         .btn:hover {
             background-color: #e63900;
         }
+        .hidden {
+            display: none;
+        }
+        .login-box {
+            margin-top: 50px;
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
     <header>🔍 Jeu de Piste Mystère 🔍</header>
-    <div class="container">
+    <div class="container" id="login-container">
+        <h1>Connexion</h1>
+        <div class="login-box">
+            <input type="text" id="username" placeholder="Pseudo">
+            <br>
+            <input type="password" id="password" placeholder="Mot de passe">
+            <br>
+            <button class="btn" onclick="login()">Se connecter</button>
+            <br>
+            <button class="btn" onclick="showRecovery()">Mot de passe oublié</button>
+        </div>
+    </div>
+    <div class="container hidden" id="recovery-container">
+        <h1>Récupération de mot de passe</h1>
+        <p>Répondez aux questions pour vous reconnecter.</p>
+        <input type="text" id="pet" placeholder="Nom de votre animal de compagnie">
+        <br>
+        <input type="text" id="grandmother" placeholder="Prénom de votre grand-mère">
+        <br>
+        <input type="text" id="city" placeholder="Lieu où vous habitez">
+        <br>
+        <button class="btn" onclick="recoverAccount()">Valider</button>
+    </div>
+    <div class="container hidden" id="game-container">
         <h1>Bienvenue, détective...</h1>
         <p>Un message codé a été trouvé. À toi de le déchiffrer !</p>
         <button class="btn" onclick="startGame()">Commencer l'enquête</button>
     </div>
     <script>
+        function login() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            
+            if (username === "detective" && password === "mystere") {
+                document.getElementById("login-container").classList.add("hidden");
+                document.getElementById("game-container").classList.remove("hidden");
+            } else {
+                alert("Identifiants incorrects. Réessayez !");
+            }
+        }
+        
+        function showRecovery() {
+            document.getElementById("login-container").classList.add("hidden");
+            document.getElementById("recovery-container").classList.remove("hidden");
+        }
+
+        function recoverAccount() {
+            var pet = document.getElementById("pet").value.toLowerCase();
+            var grandmother = document.getElementById("grandmother").value.toLowerCase();
+            var city = document.getElementById("city").value.toLowerCase();
+            
+            if (pet === "medor" && grandmother === "lucie" && city === "paris") {
+                alert("Réponses correctes ! Connexion réussie.");
+                document.getElementById("recovery-container").classList.add("hidden");
+                document.getElementById("game-container").classList.remove("hidden");
+            } else {
+                alert("Réponses incorrectes. Réessayez !");
+            }
+        }
+        
         function startGame() {
             alert("Première énigme à résoudre !");
-            // Ici, tu pourras rediriger vers la première énigme ou afficher un indice
         }
     </script>
 </body>
